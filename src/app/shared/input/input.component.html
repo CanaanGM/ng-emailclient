@@ -1,1 +1,26 @@
-<p>input works!</p>
+<div class="field">
+    <label for="">{{label}}</label>
+    <input  [formControl]="control" [type]="inputType" />
+
+    <div *ngIf="showErrors()" class="ui pointing red basic label">
+        <p *ngIf="control?.errors.required">
+            Value required
+        </p>
+
+        <p *ngIf="control?.errors.minlength">
+            Too short, min length is {{control.errors.minlength.actualLength}}
+        </p>
+
+        <p *ngIf="control?.errors.maxlength">
+            Too long, max length is {{control.errors.maxlength.actualLength}}
+        </p>
+
+        <p *ngIf="control?.errors.nonUniqueUsername">
+            username is taken
+        </p>
+
+        <p *ngIf="control?.errors.noConnection">
+            no network connection, Couldn't check id user available or not. . .
+        </p>
+    </div>
+</div>
