@@ -1,1 +1,13 @@
-<p>email-reply works!</p>
+<button class="ui button inverted primary fluid" (click)="showModal = true"> 
+    Reply
+</button>
+
+<app-modal (dismiss)="showModal=false" *ngIf="showModal" >
+    <div modalTitle>Reply</div>
+
+    <app-emailform
+         (emailSubmit)="onSubmit($event)" 
+         [email]="email"
+    >
+    </app-emailform>
+</app-modal>

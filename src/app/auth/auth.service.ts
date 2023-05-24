@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
+import { Email } from '../inbox/email';
 
 interface SignedinRes {
   authenticated: boolean
@@ -28,7 +29,7 @@ export interface SigninCreds {
   providedIn: 'root'
 })
 export class AuthService {
-
+  username = ""; 
   constructor(private httpClient: HttpClient) { }
 
   signedin$= new BehaviorSubject<boolean | null>(null);
@@ -48,7 +49,10 @@ export class AuthService {
     return this.httpClient.post<SignupRes>(`${this.AUTH_URL}signup`, 
       creds
     ).pipe(
-      tap(() => this.signedin$.next(true) )
+      tap(({username}) =>{
+         this.signedin$.next(true)
+         this.username = username
+        })
     )
   }
 
@@ -62,11 +66,11 @@ export class AuthService {
   }
 
   signin(creds:SigninCreds ){
-    return this.httpClient.post<SigninCreds>(`${this.AUTH_URL}signin`, creds)
+    return this.httpClient.post<SignedinRes>(`${this.AUTH_URL}signin`, creds)
       .pipe(
-        tap((res) => {
-          console.log(res)
+        tap(({username}) => {
           this.signedin$.next(true)
+          this.username = username
         })
       )
   }
@@ -76,9 +80,13 @@ export class AuthService {
       .get<SignedinRes>(`${this.AUTH_URL}signedin`,{withCredentials:true})
       .pipe
         (
-          tap(({authenticated}) => {
+          tap(({authenticated, username}) => {
             this.signedin$.next(authenticated);
+            this.username = username
           })
         )
   }
+
+
+
 }

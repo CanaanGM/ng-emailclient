@@ -32,4 +32,8 @@ export class EmailService {
         )
   }
 
+  sendEmail(email:Email){
+    return this.httpClient.post(`${this.URL}emails`, email)
+  }
+
 }

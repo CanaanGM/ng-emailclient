@@ -1,6 +1,10 @@
 <div class="field">
     <label for="">{{label}}</label>
-    <input  [formControl]="control" [type]="inputType" />
+    <input *ngIf="controlType=== 'input'" [formControl]="control" [type]="inputType" />
+
+    <textarea *ngIf="controlType=== 'textarea'" [formControl]="control" name="" id="" cols="30" rows="10">
+        
+    </textarea>
 
     <div *ngIf="showErrors()" class="ui pointing red basic label">
         <p *ngIf="control?.errors.required">
@@ -13,6 +17,10 @@
 
         <p *ngIf="control?.errors.maxlength">
             Too long, max length is {{control.errors.maxlength.actualLength}}
+        </p>
+
+        <p *ngIf="control?.errors.email">
+            enter a valid email yo
         </p>
 
         <p *ngIf="control?.errors.nonUniqueUsername">
